@@ -36,7 +36,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1625038868335192}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4404513, y: -0.0000014305115, z: -0.1824811}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -97,3 +97,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vertexMarker: {fileID: 4279906510990924, guid: 528783471c586465c9aa7307bdbdbdd5,
     type: 2}
+  edgeMarer: {fileID: 0}

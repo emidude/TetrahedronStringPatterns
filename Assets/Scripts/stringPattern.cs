@@ -4,62 +4,31 @@ using UnityEngine;
 
 public class stringPattern : MonoBehaviour {
 
-    Vector3[] frameVertices;
-    int[] frameIndices;
-
     List<Edge> frameEdges;
 
     Vector3[] stringVertices;
     int[] stringIndices;
 
-    float edgeDivisions = 20;
+    public float edgeDivisions = 20;
 
     Mesh mesh2;
 
     public Transform vertexMarker;
 
-    public Transform edgeMarer;
-
 	void Start () {
 
-        frameVertices = GetComponentInParent<createShape>().vertices;
-        frameIndices = GetComponentInParent<createShape>().indices;
-
         frameEdges = GetComponentInParent<createShape>().Edges;
-        //for (int i = 0; i < 6; i++)
-        //{
-        //    frameEdges[i].debugInfo();
-        //}
-
-        float edgeFraction = 1 / edgeDivisions;
-
+        
         stringVertices = new Vector3[(int)(edgeDivisions * 6)];
-        stringIndices = new int[(int)(edgeDivisions * 6)];
+        //stringIndices = new int[(int)(edgeDivisions * frameEdges.Count)];
 
-        for (int i = 0; i < 3; i++)
-        {
-            drawString(i, edgeFraction);
-        }
+        setStringVertices();
 
-        //for(int i = 0; i < stringVertices.Length; i++)
-        //{
-        //    Debug.Log("vert = " + stringVertices[i]);
-        //}
+        //drawStringVertices();        
 
-        //for (int i = 0; i < stringVertices.Length; i++)
-        //{
-        //    Debug.Log("ind = " + stringIndices[i]);
-        //}
+        setIndexPattern1();
 
-        //for (int i = 0; i < stringVertices.Length; i++)
-        //{
-        //    Transform pf = Instantiate(vertexMarker, stringVertices[i], Quaternion.identity);
-        //}
-        for (int i = 0; i <2; i++)
-        {
-            Transform pf = Instantiate(vertexMarker, stringVertices[i], Quaternion.identity);
-        }
-
+        //setIndexPattern2();BAD
         generateMesh();
     }
 
@@ -68,35 +37,96 @@ public class stringPattern : MonoBehaviour {
 		
 	}
 
-    void drawString(int ind, float edgeFraction)
+    void setStringVertices()
     {
-
-        Edge e1 = frameEdges[ind];
-        Edge e2 = frameEdges[e1.pairedEdge];
+        int totalNumberOfStringVertices = (int)edgeDivisions * frameEdges.Count;
         
-        for (int i = 0; i < edgeDivisions; i+=2)
-        {
-            int sectionInArray = (int)(ind * edgeDivisions);
-            //can do with split half after
-            Vector3 newVertexStart = Vector3.Lerp(e1.startVertex, e1.endVertex, i * edgeFraction + edgeFraction);
-            
-            Vector3 newVertexEnd = Vector3.Lerp(e2.startVertex, e2.endVertex, i * edgeFraction + edgeFraction);
-            
-            stringVertices[i + sectionInArray] = newVertexStart;
-            
-            stringVertices[i + 1 + sectionInArray] = newVertexEnd;
+        int p = 0;
 
-            stringIndices[i + sectionInArray] = i;
-            
-            stringIndices[i + 1 + sectionInArray] = i + 1;
-            
+        List<int> donePairs = new List<int>();
+
+        for (int edge = 0; edge < frameEdges.Count; edge++)
+        {
+            Edge e1 = frameEdges[edge];
+            Edge e2 = frameEdges[e1.pairedEdge];
+
+            if (!alreadyDoneThePair(e1, donePairs)) //MAYBE SHOULD ACTUALLY HAVE AN EDGEPAIR CLASS
+            {
+                for (int vert = 0; vert < e1.edgeVertices.Length; vert++)
+                {
+                    stringVertices[p] = e1.edgeVertices[vert];
+                    stringVertices[p + 1] = e2.edgeVertices[vert];
+                    p += 2;
+                }
+            }
+
         }
+    }
+
+    bool alreadyDoneThePair(Edge newEdge, List<int> donePairs)
+    {
+        for(int i =0; i < donePairs.Count; i++)
+        {
+            if (newEdge.edgeName == donePairs[i])
+            {
+                return true;
+            }
+            else if(newEdge.pairedEdge == donePairs[i])
+            {
+                return true;
+            }
+        }
+        donePairs.Add(newEdge.edgeName);
+        donePairs.Add(newEdge.pairedEdge);
+        return false;
+    }
+
+    void setIndexPattern1()
+    {
+        stringIndices = new int[(int)(edgeDivisions * frameEdges.Count)];
+        for (int i = 0; i < stringIndices.Length; i++)
+        {
+            stringIndices[i] = i;
+        }
+    }
+
+    void setIndexPattern2()
+    {
+        if ( (edgeDivisions * frameEdges.Count)%2 != 0)
+        {
+            Debug.Log("WATCH OUT - CHECK HERE, NOT EVEN NUMBER OF VERTS SO CROSS OVER OR TAKE ONE OFF");
+        } 
+        stringIndices = new int[(int)(edgeDivisions * frameEdges.Count)/2];
+
+        for(int j = 0; j < frameEdges.Count; j++)
+        {
+            for (int i = 0; i < edgeDivisions / 2; i++)
+            {
+                stringIndices[i + j*(int)edgeDivisions/2] = i + j * (int)edgeDivisions;
+            }
+        }
+
+        for(int i = 0; i < stringIndices.Length; i++)
+        {
+            Debug.Log(stringIndices[i]);
+        }
+        
     }
 
     void generateMesh()
     {
         GetComponent<MeshFilter>().mesh = mesh2 = new Mesh();
         mesh2.vertices = stringVertices;
-        mesh2.SetIndices(new int[]{0,1,2,3,4,5,6}, MeshTopology.Lines, 0);
+        mesh2.SetIndices(stringIndices, MeshTopology.Lines, 0);
+
+    }
+
+    void drawStringVertices()
+    {
+        for (int i = 0; i < stringVertices.Length; i++)
+        {
+            Transform pf = Instantiate(vertexMarker, stringVertices[i], Quaternion.identity);
+        }
+
     }
 }

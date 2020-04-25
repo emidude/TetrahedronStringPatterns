@@ -16,6 +16,8 @@ public class createShape : MonoBehaviour {
 
     public Transform one, two, three, four;
 
+    public int edgeDivisions = 20;
+
 
     // Use this for initialization
     void Start () {
@@ -36,10 +38,11 @@ public class createShape : MonoBehaviour {
         //set edges
         setEdges();
 
-        Instantiate(one, vertices[0], Quaternion.identity);
-        Instantiate(two, vertices[1], Quaternion.identity);
-        Instantiate(three, vertices[2], Quaternion.identity);
-        Instantiate(four, vertices[3], Quaternion.identity);
+        //find out which vertices are which so can pair opposite sides
+        //Instantiate(one, vertices[0], Quaternion.identity);
+        //Instantiate(two, vertices[1], Quaternion.identity);
+        //Instantiate(three, vertices[2], Quaternion.identity);
+        //Instantiate(four, vertices[3], Quaternion.identity);
 
 
     }
@@ -96,14 +99,10 @@ public class createShape : MonoBehaviour {
             newEdge.startVertex = vertices[startIndex];
             newEdge.endVertex = vertices[endIndex];
 
+            newEdge.setIntermediateVertices(edgeDivisions);
+
             Edges.Add(newEdge);   
         }
-        
-
-        //for (int i = 0; i < 6; i++)
-        //{
-        //    Edges[i].debugInfo();
-        //}
     }
 
     int[] getPairs(int numberOfIndices) { //would have to change this significantly for other shapes
