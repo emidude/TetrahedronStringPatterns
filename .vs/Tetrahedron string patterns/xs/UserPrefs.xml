@@ -1,0 +1,18 @@
+﻿<Properties StartupConfiguration="{839A3CDD-2FFA-8A18-CDC5-D683A2BF113E}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Edge.cs">
+    <Files>
+      <File FileName="Assets/createShape.cs" Line="34" Column="20" />
+      <File FileName="../Desktop/projects@ICERM/IntroUnity/UnityIntroCheatSheets/Assets/Scripts/MakePrefabs.cs" Line="19" Column="84" />
+      <File FileName="../Desktop/projects@ICERM/IntroUnity/UnityIntroCheatSheets/Assets/Scripts/MoveWithController.cs" Line="1" Column="1" />
+      <File FileName="Assets/stringPattern.cs" Line="32" Column="1" />
+      <File FileName="Assets/Edge.cs" Line="6" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="e75267f4-8a80-4aa7-b1ee-eeea221c112a" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
