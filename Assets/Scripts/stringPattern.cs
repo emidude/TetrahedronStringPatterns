@@ -15,6 +15,9 @@ public class stringPattern : MonoBehaviour {
 
     public Transform vertexMarker;
 
+    List<EdgePair> edgePairs;
+    int numberOfEdgePairs = 3;
+
 	void Start () {
 
         frameEdges = GetComponentInParent<createShape>().Edges;
@@ -26,9 +29,18 @@ public class stringPattern : MonoBehaviour {
 
         //drawStringVertices();        
 
-        setIndexPattern1();
-
+        //setIndexPattern1();
         //setIndexPattern2();BAD
+
+        ///////////////////////////////////////
+        createEdgePairs();
+        for (int i = 0; i < edgePairs.Count; i++)
+        {
+            Debug.Log(edgePairs[i].e1.edgeName + " " + edgePairs[i].e2.edgeName);
+        }
+        setStringVerticesInEdgePairOrder();
+        ////////////////////////////////////
+
         generateMesh();
     }
 
@@ -60,6 +72,31 @@ public class stringPattern : MonoBehaviour {
                 }
             }
 
+        }
+    }
+
+    void setStringVerticesInEdgePairOrder()
+    {
+        for (int i = 0; i < edgePairs.Count; i++)
+        {
+           // drawStringVertices[i] = 
+        }
+    }
+
+    void createEdgePairs()
+    {
+        edgePairs = new List<EdgePair>();
+        List<int> donePairs = new List<int>();
+        for (int i = 0 ; i < frameEdges.Count; i++)
+        {
+            Edge e = frameEdges[i];
+            if (!alreadyDoneThePair(e, donePairs))
+            {
+                Edge otherE = frameEdges[e.pairedEdge];
+                EdgePair ep = new EdgePair(e, otherE, 0.5f); //we want half say
+                edgePairs.Add(ep);
+
+            }
         }
     }
 
