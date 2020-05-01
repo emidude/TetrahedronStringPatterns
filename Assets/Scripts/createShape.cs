@@ -45,6 +45,7 @@ public class createShape : MonoBehaviour {
         //Instantiate(four, vertices[3], Quaternion.identity);
 
 
+
     }
 
 
@@ -74,16 +75,26 @@ public class createShape : MonoBehaviour {
     {
         GetComponent<MeshFilter>().mesh = mesh = new Mesh();
         mesh.vertices = vertices;
-        indices = new int[]{ 0, 1, 0, 2, 0, 3, 1, 2, 1, 3, 2, 3 };
+        //indices = new int[]{
+        //0,1,1,2,2,0,
+        //1,2,2,3,3,1,
+        //3,1,1,0,0,3,
+        //0,3,3,2,2,0 };
+        indices = new int[]{
+        0,1,1,2,2,0,
+        2,3,3,1,
+        0,3,
+        };
         mesh.SetIndices(indices, MeshTopology.Lines, 0);
     }
 
     void setEdges()
     {
         int numberOfEdges = 6;
-        int numberOfIndices = numberOfEdges * 2; //where indices are pairs, from vertex1 to vertex2
+        int numberOfIndices = numberOfEdges *2 ; //where indices are pairs, from vertex1 to vertex2 
 
-        int[] pairs = getPairs(numberOfIndices);
+        //int[] pairs = getPairs(numberOfIndices);
+        int[] pairs = setPairsByHand();
 
         for (int i = 0; i < 6; i++)
         {
@@ -118,12 +129,25 @@ public class createShape : MonoBehaviour {
                     indices[i+1] == indices[j] ||
                     indices[i+1] == indices[j + 1]))
                 {
-                    pairs[i/2] = j/2;
+                    pairs[i/2] = j;
                 }
             }
             
         }
         return pairs;
     }
+
+    int[] setPairsByHand()
+    {
+        //match up pairs of indices so that no 2 share a number
+        //indices = new int[]{
+        //0,1,1,2,2,0,
+        //2,3,3,1,
+        //0,3,
+        //};
+        return new int[] {3,5,4,0,2,1};
+
+    }
+
 
 }

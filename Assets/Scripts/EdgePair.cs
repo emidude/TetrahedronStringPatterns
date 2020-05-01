@@ -19,9 +19,12 @@ public class EdgePair {
 
         numberPairedEdgeVertices = e1.edgeDivisions;
 
-        subsetNumberVertices = (int)(numberPairedEdgeVertices * frac);
+
 
         verticese1e2 = new Vector3[numberPairedEdgeVertices * 2];
+
+        subsetNumberVertices = (int)(numberPairedEdgeVertices * frac);
+        //subsetNumberVertices = (int)(verticese1e2.Length * frac);
 
         //put vertices in array: [v1,v2,v3,...,w1,w2,w3,...] for v=e1 verts w =e2 verts
         for (int i = 0; i < numberPairedEdgeVertices; i++)
@@ -33,27 +36,36 @@ public class EdgePair {
             verticese1e2[i] = e2.edgeVertices[i- numberPairedEdgeVertices];
         }
 
-        indicesConnectingVertices = new int[subsetNumberVertices * 2];
+        indicesConnectingVertices = new int[subsetNumberVertices*2];
 
     }
     
     void setIndicesConnectingVerticesForwards()
     {
-        for(int i = 0; i < subsetNumberVertices*2; i+=2)
+        for(int i = 0; i < subsetNumberVertices; i+=2)
         {
             indicesConnectingVertices[i] = i;
             indicesConnectingVertices[i + 1] = numberPairedEdgeVertices + i;
         }
     }
 
+    //public void setIndicesConnectingVertices(int direction, int startPosition) //
+    //{
+    //    for(int i = 0; i < subsetNumberVertices*2; i += 2)
+    //    {
+    //        indicesConnectingVertices[i] = i;
+    //        indicesConnectingVertices[i + 1] = numberPairedEdgeVertices + startPosition + i * direction;
+
+    //    }
+    //}
     public void setIndicesConnectingVertices(int direction, int startPosition) //
     {
-        for(int i = 0; i < subsetNumberVertices*2; i += 2)
+        for (int i = 0; i < subsetNumberVertices; i++)
         {
-            indicesConnectingVertices[i] = i;
-            indicesConnectingVertices[i + 1] = numberPairedEdgeVertices + startPosition + i * direction;
+            indicesConnectingVertices[i*2] = i;
+            indicesConnectingVertices[i*2 + 1] = numberPairedEdgeVertices + startPosition + i * direction;
 
         }
     }
-    
+
 }

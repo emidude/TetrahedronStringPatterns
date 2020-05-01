@@ -36,20 +36,30 @@ public class stringPattern : MonoBehaviour {
         float fractionOfVerts = 1f;
         createEdgePairs(fractionOfVerts);
 
-        for (int i = 0; i < edgePairs.Count; i++)
-        {
-            Debug.Log(edgePairs[i].e1.edgeName + " " + edgePairs[i].e2.edgeName);
-            Debug.Log(edgePairs[i].verticese1e2.Length);
-            for (int j = 0; j < edgePairs[i].verticese1e2.Length; j++)
-            {
-                Debug.Log("vertex:" + j + ": " + edgePairs[i].verticese1e2[j]);
-            }
+        //for (int i = 0; i < edgePairs.Count; i++)
+        //{
+        //    Debug.Log(edgePairs[i].e1.edgeName + " " + edgePairs[i].e2.edgeName);
+        //    Debug.Log(edgePairs[i].verticese1e2.Length);
+        //    for (int j = 0; j < edgePairs[i].verticese1e2.Length; j++)
+        //    {
+        //        Debug.Log("vertex:" + j + ": " + edgePairs[i].verticese1e2[j]);
+        //    }
             
-        }
+        //}
         setStringVerticesInEdgePairOrder();
         ////////////////////////////////////
         //set indices in the edge pairs according to fucntion:
-        setIndicesInEdgePairs(1,0); //direction, start position
+        setIndicesInEdgePairs(1,0); //direction, start position 
+
+        for(int i = 0; i < edgePairs.Count; i++)
+        {
+            Debug.Log("edge pair: " + i);
+            Debug.Log("indices connecting vertices length = " + edgePairs[i].indicesConnectingVertices.Length);
+            for(int j = 0; j < edgePairs[i].indicesConnectingVertices.Length; j++)
+            {
+                Debug.Log("index " + j + " = " + edgePairs[i].indicesConnectingVertices[j]);
+            }
+        }
 
         //put in string:
         setIndicesInEdgePairOrder();
@@ -107,18 +117,24 @@ public class stringPattern : MonoBehaviour {
 
     void setIndicesInEdgePairOrder()
     {
+        int numVertsPerEdgePair = edgePairs[0].verticese1e2.Length;
+        Debug.Log("numVertsPerEdgePair" + numVertsPerEdgePair);
         int numIndicesPerEdgePair = edgePairs[0].indicesConnectingVertices.Length;
-        stringIndices = new int[numIndicesPerEdgePair * edgePairs.Count];
-        for(int i = 0; i < edgePairs.Count; i++)
+        Debug.Log("numIndicesPerEdgePair" + numIndicesPerEdgePair);
+
+        stringIndices = new int[numIndicesPerEdgePair * edgePairs.Count ];
+
+        for (int i = 0; i < edgePairs.Count; i++)
         {
             EdgePair currentEdgePair = edgePairs[i];
             //int numIndicesPerEdgePair = currentEdgePair.indicesConnectingVertices.Length;
+
             int positionInFullArray = i * numIndicesPerEdgePair;
-            int numVertsPerEdgePair = currentEdgePair.verticese1e2.Length;
-            for (int j = positionInFullArray; j < numIndicesPerEdgePair + positionInFullArray; j++)
+            
+            for (int j = 0; j < numIndicesPerEdgePair; j++)
             {
-                stringIndices[j] = currentEdgePair.indicesConnectingVertices[j - positionInFullArray] + numVertsPerEdgePair*i;
-                //Debug.Log("index " + j);
+                stringIndices[j + positionInFullArray] = currentEdgePair.indicesConnectingVertices[j] + numVertsPerEdgePair*i;
+                Debug.Log("positionInFullArray=" + positionInFullArray + "+ current edge pair indices count= " + j + ": gives big index " + stringIndices[j + positionInFullArray]);
             }
         }
     }
