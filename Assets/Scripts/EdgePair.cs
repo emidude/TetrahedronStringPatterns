@@ -9,9 +9,9 @@ public class EdgePair {
     int numberPairedEdgeVertices;
     int subsetNumberVertices;
 
-    Vector3[] verticese1e2;
+    public Vector3[] verticese1e2;
 
-    int[] indicesConnectingVertices;
+    public int[] indicesConnectingVertices;
 
     public EdgePair(Edge e1, Edge e2, float frac) {
         this.e1 = e1;
@@ -43,6 +43,16 @@ public class EdgePair {
         {
             indicesConnectingVertices[i] = i;
             indicesConnectingVertices[i + 1] = numberPairedEdgeVertices + i;
+        }
+    }
+
+    public void setIndicesConnectingVertices(int direction, int startPosition) //
+    {
+        for(int i = 0; i < subsetNumberVertices*2; i += 2)
+        {
+            indicesConnectingVertices[i] = i;
+            indicesConnectingVertices[i + 1] = numberPairedEdgeVertices + startPosition + i * direction;
+
         }
     }
     

@@ -21,12 +21,14 @@ public class Edge {
 	
 	public void setIntermediateVertices(int edgeDivisions)
     {
+        this.edgeDivisions = edgeDivisions;
         edgeVertices = new Vector3[edgeDivisions];
         float edgeFraction = (float)1 / edgeDivisions;
 
         for(int i = 0; i < edgeDivisions; i++)
         {
-            edgeVertices[i] = Vector3.Lerp(startVertex, endVertex, i * edgeFraction + edgeFraction);
+            //edgeVertices[i] = Vector3.Lerp(startVertex, endVertex, i * edgeFraction + edgeFraction);
+            edgeVertices[i] = Vector3.Lerp(startVertex, endVertex, i * edgeFraction );
         }
     }
 }

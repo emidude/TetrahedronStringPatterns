@@ -25,7 +25,7 @@ public class stringPattern : MonoBehaviour {
         stringVertices = new Vector3[(int)(edgeDivisions * 6)];
         //stringIndices = new int[(int)(edgeDivisions * frameEdges.Count)];
 
-        setStringVertices();
+        //setStringVertices();
 
         //drawStringVertices();        
 
@@ -33,15 +33,30 @@ public class stringPattern : MonoBehaviour {
         //setIndexPattern2();BAD
 
         ///////////////////////////////////////
-        createEdgePairs();
+        float fractionOfVerts = 1f;
+        createEdgePairs(fractionOfVerts);
+
         for (int i = 0; i < edgePairs.Count; i++)
         {
             Debug.Log(edgePairs[i].e1.edgeName + " " + edgePairs[i].e2.edgeName);
+            Debug.Log(edgePairs[i].verticese1e2.Length);
+            for (int j = 0; j < edgePairs[i].verticese1e2.Length; j++)
+            {
+                Debug.Log("vertex:" + j + ": " + edgePairs[i].verticese1e2[j]);
+            }
+            
         }
         setStringVerticesInEdgePairOrder();
         ////////////////////////////////////
+        //set indices in the edge pairs according to fucntion:
+        setIndicesInEdgePairs(1,0); //direction, start position
+
+        //put in string:
+        setIndicesInEdgePairOrder();
 
         generateMesh();
+
+        drawStringVertices(0,120);
     }
 
     // Update is called once per frame
@@ -79,24 +94,59 @@ public class stringPattern : MonoBehaviour {
     {
         for (int i = 0; i < edgePairs.Count; i++)
         {
-           // drawStringVertices[i] = 
+            EdgePair currentEdgePair = edgePairs[i];
+            int numVertsPerEdgePair = currentEdgePair.verticese1e2.Length;
+            int positionInFullArray = i * numVertsPerEdgePair;
+            for (int j = positionInFullArray; j< numVertsPerEdgePair + positionInFullArray; j++)
+            {
+                stringVertices[j] = currentEdgePair.verticese1e2[j - positionInFullArray];
+            }
+           //  
         }
     }
 
-    void createEdgePairs()
+    void setIndicesInEdgePairOrder()
+    {
+        int numIndicesPerEdgePair = edgePairs[0].indicesConnectingVertices.Length;
+        stringIndices = new int[numIndicesPerEdgePair * edgePairs.Count];
+        for(int i = 0; i < edgePairs.Count; i++)
+        {
+            EdgePair currentEdgePair = edgePairs[i];
+            //int numIndicesPerEdgePair = currentEdgePair.indicesConnectingVertices.Length;
+            int positionInFullArray = i * numIndicesPerEdgePair;
+            int numVertsPerEdgePair = currentEdgePair.verticese1e2.Length;
+            for (int j = positionInFullArray; j < numIndicesPerEdgePair + positionInFullArray; j++)
+            {
+                stringIndices[j] = currentEdgePair.indicesConnectingVertices[j - positionInFullArray] + numVertsPerEdgePair*i;
+                //Debug.Log("index " + j);
+            }
+        }
+    }
+
+    void createEdgePairs(float fractionOfVerts)
     {
         edgePairs = new List<EdgePair>();
         List<int> donePairs = new List<int>();
         for (int i = 0 ; i < frameEdges.Count; i++)
         {
             Edge e = frameEdges[i];
+            Debug.Log("created edge divisons =" + e.edgeDivisions);
             if (!alreadyDoneThePair(e, donePairs))
             {
                 Edge otherE = frameEdges[e.pairedEdge];
-                EdgePair ep = new EdgePair(e, otherE, 0.5f); //we want half say
+                EdgePair ep = new EdgePair(e, otherE, fractionOfVerts); //we want half say
+                Debug.Log("created edgeP divisons =" + ep.e1.edgeDivisions); 
                 edgePairs.Add(ep);
 
             }
+        }
+    }
+
+    void setIndicesInEdgePairs(int direction, int startPosition)
+    {
+        for(int i = 0; i < edgePairs.Count; i++)
+        {
+            edgePairs[i].setIndicesConnectingVertices(direction, startPosition);
         }
     }
 
@@ -125,6 +175,26 @@ public class stringPattern : MonoBehaviour {
         {
             stringIndices[i] = i;
         }
+    }
+
+    //hmmmm gonna be tricky unless reordered first to vertex combos
+    void setIndexPatternCustom(int direction, int startPosition, float frac)
+    {
+        //public void setIndicesConnectingVertices(int direction, int startPosition) //
+        //{
+        //    for (int i = 0; i < subsetNumberVertices * 2; i += 2)
+        //    {
+        //        indicesConnectingVertices[i] = i;
+        //        indicesConnectingVertices[i + 1] = numberPairedEdgeVertices + startPosition + i * direction;
+
+        //    }
+        //}
+        stringIndices = new int[(int)(edgeDivisions * frameEdges.Count)];
+        for (int i = 0; i < stringIndices.Length; i++)
+        {
+            stringIndices[i] = i;
+        }
+
     }
 
     void setIndexPattern2()
@@ -158,12 +228,15 @@ public class stringPattern : MonoBehaviour {
 
     }
 
-    void drawStringVertices()
+    void drawStringVertices(int from, int to )
     {
-        for (int i = 0; i < stringVertices.Length; i++)
+        //for (int i = 0; i < stringVertices.Length; i++)
+        for (int i = from; i < to; i++)
         {
             Transform pf = Instantiate(vertexMarker, stringVertices[i], Quaternion.identity);
         }
 
     }
+
+    
 }

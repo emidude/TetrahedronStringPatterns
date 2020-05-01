@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\createShape.cs" />
     <Compile Include="Assets\Scripts\Edge.cs" />
     <Compile Include="Assets\Scripts\EdgePair.cs" />
+    <Compile Include="Assets\Scripts\Functions.cs" />
     <Compile Include="Assets\Scripts\stringPattern.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>/Users/emilydonovan/Tetrahedron string patterns/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>

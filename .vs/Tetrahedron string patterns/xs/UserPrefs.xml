@@ -1,10 +1,11 @@
 ﻿<Properties StartupConfiguration="{839A3CDD-2FFA-8A18-CDC5-D683A2BF113E}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/EdgePair.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/createShape.cs">
     <Files>
-      <File FileName="Assets/createShape.cs" Line="103" Column="1" />
-      <File FileName="Assets/Edge.cs" Line="6" Column="1" />
-      <File FileName="Assets/Scripts/stringPattern.cs" Line="84" Column="99" />
-      <File FileName="Assets/Scripts/EdgePair.cs" Line="7" Column="20" />
+      <File FileName="Assets/Scripts/createShape.cs" Line="40" Column="1" />
+      <File FileName="Assets/Scripts/stringPattern.cs" Line="93" Column="10" />
+      <File FileName="Assets/Scripts/Edge.cs" Line="19" Column="40" />
+      <File FileName="Assets/Scripts/EdgePair.cs" Line="20" Column="39" />
+      <File FileName="Assets/Scripts/Functions.cs" Line="14" Column="22" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
