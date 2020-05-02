@@ -18,6 +18,13 @@ public class createShape : MonoBehaviour {
 
     public int edgeDivisions = 20;
 
+    public List<Edge> SubEdges = new List<Edge>();
+
+    public int numberOfSubEdgesForEachEdge = 2;
+
+    GameObject cube1, cube2;
+
+    
 
     // Use this for initialization
     void Start () {
@@ -39,12 +46,11 @@ public class createShape : MonoBehaviour {
         setEdges();
 
         //find out which vertices are which so can pair opposite sides
-        //Instantiate(one, vertices[0], Quaternion.identity);
-        //Instantiate(two, vertices[1], Quaternion.identity);
-        //Instantiate(three, vertices[2], Quaternion.identity);
-        //Instantiate(four, vertices[3], Quaternion.identity);
+        //displayMarkerObjects();
+        
 
-
+        //rotate cube so cab see from top dwon
+        transform.eulerAngles = new Vector3(-132.213f, 27.851f, -38.45599f);
 
     }
 
@@ -52,8 +58,93 @@ public class createShape : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            transform.Rotate(new Vector3(0f, 0f, 10f) * Time.deltaTime);
+
+            //quaternions
+            //https://docs.unity3d.com/ScriptReference/Quaternion-operator_multiply.html
+
+            //https://docs.unity3d.com/ScriptReference/Quaternion.html
+
+            float angle = 50f * Time.deltaTime;
+            transform.rotation *= Quaternion.AngleAxis(angle, Vector3.up);
+            //cube1.transform.rotation *= Quaternion.AngleAxis(angle, Vector3.up);
+            //cube2.transform.rotation *= Quaternion.AngleAxis(angle, Vector3.up);
+
+
+        }
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            transform.Rotate(new Vector3(0f, 0f, 10f) * Time.deltaTime);
+
+            //quaternions
+            //https://docs.unity3d.com/ScriptReference/Quaternion-operator_multiply.html
+
+            //https://docs.unity3d.com/ScriptReference/Quaternion.html
+
+            float angle = 50f * Time.deltaTime;
+            transform.rotation *= Quaternion.AngleAxis(angle, -Vector3.up);
+            
+
+        }
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            transform.Rotate(new Vector3(0f, 0f, 10f) * Time.deltaTime);
+
+            //quaternions
+            //https://docs.unity3d.com/ScriptReference/Quaternion-operator_multiply.html
+
+            //https://docs.unity3d.com/ScriptReference/Quaternion.html
+
+            float angle = 50f * Time.deltaTime;
+            transform.rotation *= Quaternion.AngleAxis(angle, Vector3.left);
+            
+
+
+        }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            transform.Rotate(new Vector3(0f, 0f, 10f) * Time.deltaTime);
+
+            //quaternions
+            //https://docs.unity3d.com/ScriptReference/Quaternion-operator_multiply.html
+
+            //https://docs.unity3d.com/ScriptReference/Quaternion.html
+
+            float angle = 50f * Time.deltaTime;
+            transform.rotation *= Quaternion.AngleAxis(angle, Vector3.right);
+            
+
+        }
+        if (Input.GetKey(KeyCode.Q))
+        {
+            transform.Rotate(new Vector3(0f, 0f, 10f) * Time.deltaTime);
+
+            //quaternions
+            //https://docs.unity3d.com/ScriptReference/Quaternion-operator_multiply.html
+
+            //https://docs.unity3d.com/ScriptReference/Quaternion.html
+
+            float angle = 50f * Time.deltaTime;
+            transform.rotation *= Quaternion.AngleAxis(angle, Vector3.forward);
+            
+        }
+        if (Input.GetKey(KeyCode.W))
+        {
+            transform.Rotate(new Vector3(0f, 0f, 10f) * Time.deltaTime);
+
+            //quaternions
+            //https://docs.unity3d.com/ScriptReference/Quaternion-operator_multiply.html
+
+            //https://docs.unity3d.com/ScriptReference/Quaternion.html
+
+            float angle = 50f * Time.deltaTime;
+            transform.rotation *= Quaternion.AngleAxis(angle, Vector3.back);
+        }
+
+        
+    }
 
     void setVertexCoords1()
     {
@@ -82,8 +173,8 @@ public class createShape : MonoBehaviour {
         //0,3,3,2,2,0 };
         indices = new int[]{
         0,1,1,2,2,0,
-        2,3,3,1,
-        0,3,
+        2,3,1,3,
+        0,3
         };
         mesh.SetIndices(indices, MeshTopology.Lines, 0);
     }
@@ -149,5 +240,60 @@ public class createShape : MonoBehaviour {
 
     }
 
+    //void setSubEdges(int numberOfSubEdgesForEachEdge)
+    //{
+    //    float lerp_inc = 1 / numberOfSubEdgesForEachEdge;
+
+    //    for (int i )
+    //}
+
+    void positionCubes()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            Vector3 vertexPosFrom = Edges[i].edgeVertices[5];
+            int edgePairIndex = Edges[i].pairedEdge;
+            Vector3 vertexPosTo = Edges[edgePairIndex].edgeVertices[5];
+            
+            Color colour = new Color(0, 0, 0);
+            colour[i] = 1;
+
+            cube1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            //Get the Renderer component from the new cube
+            var cubeRenderer = cube1.GetComponent<Renderer>();
+            //Call SetColor using the shader property name "_Color" and setting the color to red
+            cubeRenderer.material.SetColor("_Color", colour);
+            cube1.transform.position = vertexPosFrom;
+            cube1.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+            cube1.transform.SetParent(transform);
+
+            cube2 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            //Get the Renderer component from the new cube
+            var cubeRenderer2 = cube2.GetComponent<Renderer>();
+            //Call SetColor using the shader property name "_Color" and setting the color to red
+            cubeRenderer2.material.SetColor("_Color", colour);
+            cube2.transform.position = vertexPosTo;
+            cube2.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+            cube2.transform.SetParent(transform);
+
+        }
+
+    }
+
+    void displayMarkerObjects()
+    {
+        Transform o1 = Instantiate(one, vertices[0], Quaternion.identity);
+        Transform o2 = Instantiate(two, vertices[1], Quaternion.identity);
+        Transform o3 = Instantiate(three, vertices[2], Quaternion.identity);
+        Transform o4 = Instantiate(four, vertices[3], Quaternion.identity);
+
+        o1.transform.SetParent(transform, true);
+        o2.transform.SetParent(transform, false);
+        o3.transform.SetParent(transform, false);
+        o4.transform.SetParent(transform, false);
+
+        //setSubEdges(2);
+        positionCubes();
+    }
 
 }
